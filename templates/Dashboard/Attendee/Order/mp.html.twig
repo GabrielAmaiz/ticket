@@ -1,0 +1,55 @@
+{% extends "Global/layout.html.twig" %}
+
+{% set pagetitle = 'Esta todo listo para que pagues con Mercado Pago' | trans %}
+
+{% block title %}{{pagetitle}}{% endblock %}
+
+{% block content %}
+
+    {% set navigation = [{"current":(pagetitle)}] %}
+    {% include "Global/navigation.html.twig" with navigation %}
+
+    <section class="section-content padding-y bg-white">
+        <div class="{{ services.getSetting("app_layout") }}">
+            <div class="row">
+                <aside class="col-lg-3 pt-3 pt-lg-0">
+                    {% include "Dashboard/sidebar.html.twig" %}
+                </aside>
+                <div class="col-lg-9 mt-4 mt-lg-0">
+                    <div class="card box">
+                        <div class="card-body" style="text-align: center;">
+                        
+                          <h4>{{ "Pay now"|trans }}</h4>
+                            <style>
+                              .mercadopago-button{
+                                font-size: .875rem;
+                                transition: all .2s ease;
+                                letter-spacing: .025em;
+                                text-transform: uppercase;
+                                font-weight: 600;
+                                line-height: 1.5;
+                                padding: 0.625rem 1.25rem;
+                                text-align: center;
+                                vertical-align: middle;
+                                white-space: nowrap;
+                                border-radius: 50px;
+                                box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+                                width: 25%;
+                              }
+                            </style>
+                            <form action="/{_locale}/dashboard/attendee/checkout" method="POST"> 
+                              <script
+                              src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
+                              data-preference-id="{{ preferenceId }}">
+                              </script>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+{% endblock %}
