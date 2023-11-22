@@ -31,3 +31,7 @@ yarn-error.log
 ###> netbeans project ###
 /nbproject/
 ###< netbeans project ###
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
