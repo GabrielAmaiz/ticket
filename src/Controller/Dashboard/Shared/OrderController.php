@@ -246,7 +246,7 @@ class OrderController extends Controller {
                     //dump($payer);
                     dump($preference);
                     //dump($payment); //die;
-                    sleep(10);
+                    //sleep(10);
                     //die("Paso por Mercado pago.");
                     
                     return $this->render('Dashboard/Attendee/Order/mp.html.twig',array(
