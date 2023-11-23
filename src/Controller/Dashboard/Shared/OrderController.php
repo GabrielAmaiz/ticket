@@ -189,6 +189,10 @@ class OrderController extends Controller {
                     if ($form->getData()['lastname'] != null && $form->getData()['lastname'] != "") {
                         $payment->setLastname($form->getData()['lastname']);
                     }
+                    $fechaActual = new \DateTime();
+                    $fechaActual->modify('+1 month');
+                    $fechaActual = $fechaActual->format('Y-m-d H:i:s');
+                    $payment->setCreatedExp($fechaActual);
                     if ($this->isGranted("ROLE_ATTENDEE")) {
                         $payment->setClientEmail($form->getData()['email']);
                         $payment->setCountry($form->getData()['country']);
@@ -205,8 +209,9 @@ class OrderController extends Controller {
                     } catch (\Throwable $th) {
                         
                     }
-                    
-
+                    dump($payment);
+                    dump($storage);
+                    dump($order);
 
                     /*$eventDate = $services->getEventDates(array("reference" => "6a6c40f14b", "organizer" => $this->getUser()->getSlug()))->getQuery()->getOneOrNullResult();
                     dump($eventDate);
@@ -244,7 +249,7 @@ class OrderController extends Controller {
 
                     //$order->setPayment($payment);
                     //dump($payer);
-                    dump($preference);
+                    //dump($preference);
                     //dump($payment); //die;
                     //sleep(10);
                     //die("Paso por Mercado pago.");
@@ -277,6 +282,7 @@ class OrderController extends Controller {
                     if ($form->getData()['lastname'] != null && $form->getData()['lastname'] != "") {
                         $payment->setLastname($form->getData()['lastname']);
                     }
+                    
                     if ($this->isGranted("ROLE_ATTENDEE")) {
                         $payment->setClientEmail($form->getData()['email']);
                         $payment->setCountry($form->getData()['country']);
@@ -771,15 +777,31 @@ class OrderController extends Controller {
             $this->addFlash('error', $translator->trans('The order can not be found'));
             return $this->redirectToRoute("dashboard_attendee_orders");
         }
+        //dump($order);
 
         if ($request->getLocale() == "ar") {
             return $this->redirectToRoute("dashboard_tickets_print", ["reference" => $reference, "_locale" => "en"]);
         }
 
         $eventDateTicketReference = $request->query->get('event', 'all');
+        //$order->base = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath().'/';
+        
+        $updatedAt = $order->getUpdatedAt();
+        if ($updatedAt instanceof \DateTime) {
+            $updatedAt->modify('+1 month');
+        }
+        $order->base = $updatedAt;
+        //dump($order->date_Exp);die;
+        return $this->render('Dashboard/Shared/Order/ticket-pdf.html.twig',array(
+            'order' => $order,
+            'eventDateTicketReference' => $eventDateTicketReference,
+            )
+        );
+        die;
 
         $pdfOptions = new Options();
         //$pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->set('isRemoteEnabled', TRUE);
         $dompdf = new Dompdf($pdfOptions);
         $html = $this->renderView('Dashboard/Shared/Order/ticket-pdf.html.twig', [
             'order' => $order,

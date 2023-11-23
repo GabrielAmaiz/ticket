@@ -107,6 +107,14 @@ class Order {
      */
     private $deletedAt;
 
+    /**
+     * @var \DateTime $createdExp
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $createdExp;
+
     public function __construct() {
         $this->status = 0;
         $this->orderelements = new ArrayCollection();
@@ -317,6 +325,16 @@ class Order {
 
     public function setDeletedAt($deletedAt) {
         $this->deletedAt = $deletedAt;
+
+        return $this;
+    }
+
+    public function getCreatedExp() {
+        return $this->createdExp;
+    }
+
+    public function setCreatedExp($createdExp) {
+        $this->createdExp = $createdExp;
 
         return $this;
     }

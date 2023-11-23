@@ -97,6 +97,14 @@ class Payment extends BasePayment {
      */
     private $deletedAt;
 
+    /**
+     * @var \DateTime $createdExp
+     *
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $createdExp;
+
     public function getId() {
         return $this->id;
     }
@@ -222,12 +230,22 @@ class Payment extends BasePayment {
         return $this->updatedAt;
     }
 
+    public function getCreatedExp() {
+        return $this->createdExp;
+    }
+    
+    
     public function setUpdatedAt($updatedAt) {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
+    public function setCreatedExp($createdExp) {
+        $this->createdExp = $createdExp;
+
+        return $this;
+    }
     public function getDeletedAt() {
         return $this->deletedAt;
     }
